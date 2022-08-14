@@ -22,9 +22,15 @@
         <label for="exampleDataList" class="form-label display-6"
           >Search for a City:</label
         >
-        <input class="form-control" placeholder="Type to search..." />
+        <input
+          class="form-control"
+          placeholder="Type to search..."
+          id="search-input"
+        />
         <div class="d-grid gap-2">
-          <button class="btn btn-primary" type="button">Search</button>
+          <button class="btn btn-primary" type="button" id="search-btn">
+            Search
+          </button>
         </div>
         <ul class="list-group">
           <li class="list-group-item">An item</li>
@@ -36,7 +42,13 @@
       </form>
       <div class="container col-md-9">
         <div class="row">
-          <div class="col-lg border border-dark">City MM/DD/YY + Weather</div>
+          <div class="col-lg border border-dark" id="current-display">
+            <!-- <h1>City</h1>
+            <p>Temp</p>
+            <p>Wind</p>
+            <p>Humidity</p>
+            <p>UV Index</p> -->
+          </div>
           <div class="row">
             <div class="col">Mon</div>
             <div class="col">Tues</div>
