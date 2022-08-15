@@ -32,6 +32,12 @@ searchBtn.addEventListener("click", function () {
     .then(function (data) {
       console.log(data);
 
+      // Header for current city name
+      console.log(data[0].name);
+      var currentCityDisplay = document.createElement("h1");
+      currentCityDisplay.textContent = data[0].name;
+      currentDisplayEl.appendChild(currentCityDisplay);
+
       //API for weather
       fetch(
         `https://api.openweathermap.org/data/2.5/onecall?lat=${data[0].lat}&lon=${data[0].lon}&units=imperial&exclude=minutely,hourly&appid=54025b88abec8d86cdfc8b7b376ecf31`
@@ -44,10 +50,9 @@ searchBtn.addEventListener("click", function () {
           console.log(data);
           console.log(typeof data);
           // Display for current current weather for city searched
-          // Temp need to add a fahrenheit symbol
           var currentTemp = data.current.temp;
           var currentTempEl = document.createElement("p");
-          currentTempEl.textContent = `Temp: ${currentTemp}`;
+          currentTempEl.textContent = `Temp: ${currentTemp} ℉`;
           currentDisplayEl.appendChild(currentTempEl);
           // Wind
           var currentWind = data.current.wind_speed;
@@ -61,50 +66,86 @@ searchBtn.addEventListener("click", function () {
           currentHumidityEl.textContent = `Humidity: ${currentHumidity} %`;
           currentDisplayEl.appendChild(currentHumidityEl);
           // UV Index
-          // Need if/else statement for it to turn green or red
           var currentUV = data.current.uvi;
           console.log(currentUV);
           var currentUVEl = document.createElement("p");
-          currentUVEl.textContent = `UV Index: ${currentUV}`;
-          currentDisplayEl.appendChild(currentUVEl);
-          // 5 day forecast: current + 5
-          var forecastList = data.daily;
-          console.log(forecastList);
-          var forecastListHeaderEl = document.createElement("div");
-          forecastEl.appendChild(forecastListHeaderEl);
-          // Turned timestamp from API to calender time
-          var ts = new Date(forecastList[0].dt * 1000);
-          var forecastDate = ts.toLocaleDateString();
-          console.log(forecastDate);
-          var forecastDateEl = document.createElement("h5");
-          forecastDateEl.textContent = forecastDate;
-          forecastListHeaderEl.appendChild(forecastDateEl);
-          // forecast Temp
-          // Need to add fahrenheit
-          var forecastTemp = forecastList[0].temp.day;
-          var forecastTempEl = document.createElement("p");
-          forecastTempEl.textContent = `Temp: ${forecastTemp}`;
-          forecastEl.appendChild(forecastTempEl);
-          // forecast Wind
-          var forecastWind = forecastList[0].wind_speed;
-          console.log(forecastWind);
-          var forecastWindEl = document.createElement("p");
-          forecastWindEl.textContent = `Wind: ${forecastWind} MPH`;
-          forecastEl.appendChild(forecastWindEl);
-          // forecast Humidity
-          var forecastHumidity = forecastList[0].humidity;
-          console.log(forecastHumidity);
-          var forecastHumidityEl = document.createElement("p");
-          forecastHumidityEl.textContent = `Humidity: ${forecastHumidity} %`;
-          forecastEl.appendChild(forecastHumidityEl);
-        });
+          var currentUVVal = document.createElement("span");
+          currentUVVal.textContent = currentUV;
 
-      // City Name
-      // Need to add date
-      console.log(data[0].name);
-      var currentCityDisplay = document.createElement("h1");
-      currentCityDisplay.textContent = data[0].name;
-      currentDisplayEl.appendChild(currentCityDisplay);
+          //Testing UV colors
+          // currentUVVal.textContent = 8;
+
+          // What is the difference between blue numbers and white numbers on Google Devs?
+          console.log(currentUVVal.textContent);
+          console.log(currentUV);
+          currentUVEl.textContent = "UV Index: ";
+          currentUVEl.appendChild(currentUVVal);
+          if (currentUVVal.textContent <= 2) {
+            currentUVVal.classList.add("low");
+          } else if (currentUVVal.textContent <= 5) {
+            currentUVVal.classList.add("moderate");
+            currentUVVal.classList.remove("low");
+          } else if (currentUVVal.textContent <= 7) {
+            currentUVVal.classList.add("high");
+            currentUVVal.classList.remove("moderate");
+            currentUVVal.classList.remove("low");
+          } else if (currentUVVal.textContent <= 10) {
+            currentUVVal.classList.add("very-high");
+            currentUVVal.classList.remove("high");
+            currentUVVal.classList.remove("moderate");
+            currentUVVal.classList.remove("low");
+          } else {
+            currentUVVal.classList.add("extreme");
+            currentUVVal.classList.remove("very-high");
+            currentUVVal.classList.remove("high");
+            currentUVVal.classList.remove("moderate");
+            currentUVVal.classList.remove("low");
+          }
+          currentDisplayEl.appendChild(currentUVEl);
+
+          // currentUVEl.textContent = `UV Index: ${currentUV}`;
+          // currentDisplayEl.appendChild(currentUVEl);
+
+          // 5 day forecast: current + 5
+          for (i = 0; i < 5; i++) {
+            var forecastList = data.daily;
+            console.log(forecastList);
+            var forecastContainerEl = document.createElement("p");
+            forecastContainerEl.setAttribute("class", "col-2");
+
+            // Turned timestamp from API to calender time
+            var ts = new Date(forecastList[i].dt * 1000);
+            var forecastDate = ts.toLocaleDateString();
+            console.log(forecastDate);
+            var forecastDateEl = document.createElement("h5");
+            forecastDateEl.textContent = forecastDate;
+            forecastContainerEl.appendChild(forecastDateEl);
+            // Icon NEED HELP WITH ICON DISPLAY
+            var forecastIcon = forecastList[i].weather.icon;
+            console.log(forecastIcon);
+            var forecastIconEl = document.createElement("i");
+            forecastIconEl.innerHTML = forecastIcon;
+            forecastContainerEl.appendChild(forecastIconEl);
+            // forecast Temp
+            var forecastTemp = forecastList[i].temp.day;
+            var forecastTempEl = document.createElement("p");
+            forecastTempEl.textContent = `Temp: ${forecastTemp} ℉`;
+            forecastContainerEl.appendChild(forecastTempEl);
+            // forecast Wind
+            var forecastWind = forecastList[i].wind_speed;
+            console.log(forecastWind);
+            var forecastWindEl = document.createElement("p");
+            forecastWindEl.textContent = `Wind: ${forecastWind} MPH`;
+            forecastContainerEl.appendChild(forecastWindEl);
+            // forecast Humidity
+            var forecastHumidity = forecastList[i].humidity;
+            console.log(forecastHumidity);
+            var forecastHumidityEl = document.createElement("p");
+            forecastHumidityEl.textContent = `Humidity: ${forecastHumidity} %`;
+            forecastContainerEl.appendChild(forecastHumidityEl);
+            forecastEl.appendChild(forecastContainerEl);
+          }
+        });
     });
   // Save to local storage
   searchHistory.push(searchInputEl.value);
@@ -120,7 +161,7 @@ searchBtn.addEventListener("click", function () {
 //   console.log(searchHistoryList[i]);
 // }
 
-function renderSearchHistory() {
+var renderSearchHistory = function () {
   searchHistoryContainerEl.innerHTML = "";
   for (i = 0; i < 5; i++) {
     var searchList = document.createElement("li");
@@ -128,7 +169,7 @@ function renderSearchHistory() {
     searchList.textContent = searchHistoryList[i];
     searchHistoryContainerEl.append(searchList);
   }
-}
+};
 
 renderSearchHistory();
 

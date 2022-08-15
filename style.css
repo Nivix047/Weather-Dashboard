@@ -3,5 +3,58 @@
 }
 
 .jumbotron {
-  border: solid black;
+  border-bottom: solid black;
+  margin-bottom: 10px;
+  background-image: linear-gradient(
+    to right,
+    rgb(88, 88, 184),
+    rgb(33, 33, 135),
+    rgb(2, 2, 33)
+  );
+  color: white;
+}
+
+#search-bar {
+  font-size: 27px;
+  font-weight: bold;
+}
+
+#search-btn {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/* #forecast {
+  background-color: blue;
+} */
+
+.col-2 {
+  background-color: rgba(44, 43, 68, 0.899);
+  color: white;
+  margin: 10px;
+}
+
+.low {
+  background-color: green;
+  color: white;
+}
+
+.moderate {
+  background-color: orange;
+  color: white;
+}
+
+.high {
+  background-color: rgb(197, 104, 5);
+  color: white;
+}
+
+.very-high {
+  background-color: rgb(244, 94, 0);
+  color: white;
+}
+
+.extreme {
+  background-color: purple;
+  color: white;
 }
