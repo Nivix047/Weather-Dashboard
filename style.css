@@ -24,8 +24,9 @@
   margin-bottom: 10px;
 }
 
-/* #forecast {
-  background-color: blue;
+/* #current-display {
+  border-style: solid;
+  border-width: thin;
 } */
 
 .col-2 {
@@ -57,4 +58,11 @@
 .extreme {
   background-color: purple;
   color: white;
+}
+
+#search-list {
+  background-color: rgb(139, 135, 135);
+  margin: 10px;
+  border-radius: 5px;
+  text-align: center;
 }

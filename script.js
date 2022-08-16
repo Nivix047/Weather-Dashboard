@@ -49,7 +49,14 @@ searchBtn.addEventListener("click", function () {
         .then(function (data) {
           console.log(data);
           console.log(typeof data);
-          // Display for current current weather for city searched
+          // Current city after search
+          // Icon for current weather
+          var currentWeather = data.current.weather[0].icon;
+          var currentWeatherURL = `http://openweathermap.org/img/wn/${currentWeather}@2x.png`;
+          var currentWeatherEl = document.createElement("img");
+          currentWeatherEl.src = currentWeatherURL;
+          currentDisplayEl.appendChild(currentWeatherEl);
+          // Temp
           var currentTemp = data.current.temp;
           var currentTempEl = document.createElement("p");
           currentTempEl.textContent = `Temp: ${currentTemp} ℉`;
@@ -120,11 +127,12 @@ searchBtn.addEventListener("click", function () {
             var forecastDateEl = document.createElement("h5");
             forecastDateEl.textContent = forecastDate;
             forecastContainerEl.appendChild(forecastDateEl);
-            // Icon NEED HELP WITH ICON DISPLAY
-            var forecastIcon = forecastList[i].weather.icon;
+            // Icon
+            var forecastIcon = forecastList[i].weather[0].icon;
             console.log(forecastIcon);
-            var forecastIconEl = document.createElement("i");
-            forecastIconEl.innerHTML = forecastIcon;
+            var forecastIconURL = `http://openweathermap.org/img/wn/${forecastIcon}@2x.png`;
+            var forecastIconEl = document.createElement("img");
+            forecastIconEl.src = forecastIconURL;
             forecastContainerEl.appendChild(forecastIconEl);
             // forecast Temp
             var forecastTemp = forecastList[i].temp.day;
@@ -150,10 +158,6 @@ searchBtn.addEventListener("click", function () {
   // Save to local storage
   searchHistory.push(searchInputEl.value);
   localStorage.setItem("search history", JSON.stringify(searchHistory));
-  // Creates a list from local storage
-  // Clickable event from list to search input
-  // Current city display
-  renderSearchHistory();
 });
 
 // console.log(searchHistoryList[0]);
@@ -163,13 +167,20 @@ searchBtn.addEventListener("click", function () {
 
 var renderSearchHistory = function () {
   searchHistoryContainerEl.innerHTML = "";
-  for (i = 0; i < 5; i++) {
+  for (i = 0; i < searchHistoryList.length; i++) {
     var searchList = document.createElement("li");
     searchList.setAttribute("type", "button");
+    searchList.setAttribute("id", "search-list");
     searchList.textContent = searchHistoryList[i];
     searchHistoryContainerEl.append(searchList);
   }
 };
+
+searchHistoryContainerEl.addEventListener("click", function (event) {
+  if (event.target.matches("#search-list")) {
+    searchInputEl.value = event.target.textContent;
+  }
+});
 
 renderSearchHistory();
 
