@@ -1,9 +1,3 @@
-// var weatherURL = "";
-
-// "https://api.openweathermap.org/data/2.5/onecall?lat=35&lon=139&units=imperial&exclude=minutely,hourly&appid=54025b88abec8d86cdfc8b7b376ecf31";
-
-// Set a variable for search and all temperal literals
-// var weatherGeoURL = `api.openweathermap.org/geo/1.0/direct?q=${search}&limit=5&appid=${weatherApiKey}`;
 var searchInputEl = document.querySelector("#search-input");
 var searchBtn = document.querySelector("#search-btn");
 var currentDisplayEl = document.querySelector("#current-display");
@@ -27,16 +21,10 @@ searchBtn.addEventListener("click", function (event) {
   }
 });
 
-// console.log(searchHistoryList[0]);
-// for (i = 0; i < 5; i++) {
-//   console.log(searchHistoryList[i]);
-// }
-
 function renderSearchHistory() {
   searchHistoryContainerEl.innerHTML = "";
   for (var i = 0; i < searchHistoryList.length; i++) {
     var searchList = document.createElement("button");
-    // searchList.setAttribute("type", "button");
     searchList.setAttribute("id", "search-list");
     searchList.textContent = searchHistoryList[i];
     searchHistoryContainerEl.append(searchList);
@@ -47,8 +35,8 @@ function getWeatherData(search) {
   // Clears the search results so it doesn't duplicate
   currentDisplayEl.innerHTML = "";
   forecastEl.innerHTML = "";
-  // DOM on API for search results
 
+  // DOM on API for search results
   var weatherGeoURL = `https://api.openweathermap.org/geo/1.0/direct?q=${search}&appid=54025b88abec8d86cdfc8b7b376ecf31`;
   console.log(searchInputEl.value);
 
@@ -139,9 +127,6 @@ function getWeatherData(search) {
           }
           currentDisplayEl.appendChild(currentUVEl);
 
-          // currentUVEl.textContent = `UV Index: ${currentUV}`;
-          // currentDisplayEl.appendChild(currentUVEl);
-
           // 5 day forecast: current + 5
           for (i = 0; i < 5; i++) {
             var forecastList = data.daily;
@@ -197,28 +182,3 @@ searchHistoryContainerEl.addEventListener("click", function (event) {
 });
 
 renderSearchHistory();
-
-// var searchHistory = [];
-// var searchHistoryContainer = document.querySelector("#history");
-
-// function renderSearchHistory() {
-//   searchHistoryContainer.innerHTML = "";
-//   for (var i = searchHistory.length - 1; i >= 0; i--) {
-//     var btn = document.createElement("button");
-//     btn.setAttribute("type", "button");
-//     btn.setAttribute("data-search", searchHistory[i]);
-//     btn.textContent = searchHistory[i];
-//     searchHistoryContainer.append(btn);
-//   }
-// }
-// function appendToHistory(search) {
-//   searchHistory.push(search);
-//   localStorage.setItem("search-history", JSON.stringify(searchHistory));
-//   //display
-//   renderSearchHistory();
-// }
-
-// function handleSearchFormSubmit() {
-// grab text in the search
-// }
-// searchform.addEventListener("submit", handleSearchFormSubmit);
