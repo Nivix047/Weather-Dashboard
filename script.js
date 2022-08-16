@@ -8,18 +8,47 @@ var searchInputEl = document.querySelector("#search-input");
 var searchBtn = document.querySelector("#search-btn");
 var currentDisplayEl = document.querySelector("#current-display");
 var forecastEl = document.querySelector("#forecast");
-var searchHistory = [];
 var searchHistoryContainerEl = document.querySelector("#search-history");
-var searchHistoryList =
-  JSON.parse(localStorage.getItem("search history")) || [];
+var searchHistoryList = JSON.parse(localStorage.getItem("searchHistory")) || [];
 
 //Search button
-searchBtn.addEventListener("click", function () {
+searchBtn.addEventListener("click", function (event) {
+  event.preventDefault();
+
+  var search = searchInputEl.value.toString();
+
+  if (search !== "") {
+    getWeatherData(search);
+
+    // Save to local storage
+    searchHistoryList.push(search);
+    localStorage.setItem("searchHistory", JSON.stringify(searchHistoryList));
+    renderSearchHistory();
+  }
+});
+
+// console.log(searchHistoryList[0]);
+// for (i = 0; i < 5; i++) {
+//   console.log(searchHistoryList[i]);
+// }
+
+function renderSearchHistory() {
+  searchHistoryContainerEl.innerHTML = "";
+  for (var i = 0; i < searchHistoryList.length; i++) {
+    var searchList = document.createElement("button");
+    // searchList.setAttribute("type", "button");
+    searchList.setAttribute("id", "search-list");
+    searchList.textContent = searchHistoryList[i];
+    searchHistoryContainerEl.append(searchList);
+  }
+}
+
+function getWeatherData(search) {
   // Clears the search results so it doesn't duplicate
   currentDisplayEl.innerHTML = "";
   forecastEl.innerHTML = "";
   // DOM on API for search results
-  var search = searchInputEl.value.toString();
+
   var weatherGeoURL = `https://api.openweathermap.org/geo/1.0/direct?q=${search}&appid=54025b88abec8d86cdfc8b7b376ecf31`;
   console.log(searchInputEl.value);
 
@@ -155,30 +184,15 @@ searchBtn.addEventListener("click", function () {
           }
         });
     });
-  // Save to local storage
-  searchHistory.push(searchInputEl.value);
-  localStorage.setItem("search history", JSON.stringify(searchHistory));
-});
-
-// console.log(searchHistoryList[0]);
-// for (i = 0; i < 5; i++) {
-//   console.log(searchHistoryList[i]);
-// }
-
-var renderSearchHistory = function () {
-  searchHistoryContainerEl.innerHTML = "";
-  for (i = 0; i < searchHistoryList.length; i++) {
-    var searchList = document.createElement("li");
-    searchList.setAttribute("type", "button");
-    searchList.setAttribute("id", "search-list");
-    searchList.textContent = searchHistoryList[i];
-    searchHistoryContainerEl.append(searchList);
-  }
-};
+}
 
 searchHistoryContainerEl.addEventListener("click", function (event) {
+  event.preventDefault();
   if (event.target.matches("#search-list")) {
     searchInputEl.value = event.target.textContent;
+    var search = event.target.textContent;
+
+    getWeatherData(search);
   }
 });
 
